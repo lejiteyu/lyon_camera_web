@@ -14,6 +14,11 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -45,6 +50,10 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name="com.example.webcam.StreamingService"
+            android:exported="false"
+            android:foregroundServiceType="camera|microphone" />
         <service
             android:name="androidx.camera.core.impl.MetadataHolderService"
             android:enabled="false"

@@ -39,6 +39,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final Button btnStartServer;
 
   @NonNull
+  public final ImageButton btnSwitchCamera;
+
+  @NonNull
   public final FrameLayout cameraLayout;
 
   @NonNull
@@ -71,16 +74,18 @@ public final class ActivityMainBinding implements ViewBinding {
   private ActivityMainBinding(@NonNull ConstraintLayout rootView,
       @NonNull ImageButton btnCloseFullScreen, @NonNull Button btnJoinAsCamera,
       @NonNull Button btnReconnect, @NonNull Button btnStartServer,
-      @NonNull FrameLayout cameraLayout, @NonNull GridLayout gridVideoContainer,
-      @NonNull ImageView imgFullScreen, @NonNull LinearLayout layoutLiveIndicator,
-      @NonNull PreviewView previewView, @NonNull LinearLayout selectionLayout,
-      @NonNull TextView txtClientStatus, @NonNull TextView txtServerStatus,
-      @NonNull View viewLiveDot, @NonNull LinearLayout viewerLayout) {
+      @NonNull ImageButton btnSwitchCamera, @NonNull FrameLayout cameraLayout,
+      @NonNull GridLayout gridVideoContainer, @NonNull ImageView imgFullScreen,
+      @NonNull LinearLayout layoutLiveIndicator, @NonNull PreviewView previewView,
+      @NonNull LinearLayout selectionLayout, @NonNull TextView txtClientStatus,
+      @NonNull TextView txtServerStatus, @NonNull View viewLiveDot,
+      @NonNull LinearLayout viewerLayout) {
     this.rootView = rootView;
     this.btnCloseFullScreen = btnCloseFullScreen;
     this.btnJoinAsCamera = btnJoinAsCamera;
     this.btnReconnect = btnReconnect;
     this.btnStartServer = btnStartServer;
+    this.btnSwitchCamera = btnSwitchCamera;
     this.cameraLayout = cameraLayout;
     this.gridVideoContainer = gridVideoContainer;
     this.imgFullScreen = imgFullScreen;
@@ -141,6 +146,12 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.btnStartServer;
       Button btnStartServer = ViewBindings.findChildViewById(rootView, id);
       if (btnStartServer == null) {
+        break missingId;
+      }
+
+      id = R.id.btnSwitchCamera;
+      ImageButton btnSwitchCamera = ViewBindings.findChildViewById(rootView, id);
+      if (btnSwitchCamera == null) {
         break missingId;
       }
 
@@ -205,9 +216,9 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((ConstraintLayout) rootView, btnCloseFullScreen,
-          btnJoinAsCamera, btnReconnect, btnStartServer, cameraLayout, gridVideoContainer,
-          imgFullScreen, layoutLiveIndicator, previewView, selectionLayout, txtClientStatus,
-          txtServerStatus, viewLiveDot, viewerLayout);
+          btnJoinAsCamera, btnReconnect, btnStartServer, btnSwitchCamera, cameraLayout,
+          gridVideoContainer, imgFullScreen, layoutLiveIndicator, previewView, selectionLayout,
+          txtClientStatus, txtServerStatus, viewLiveDot, viewerLayout);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.webcam.app-mergeDebugResources-34:/values-be/values-be.xml",
+            "outputFile": "com.example.webcam.app-mergeDebugResources-36:/values-be/values-be.xml",
             "map": [
                 {
                     "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\c94107b9979d96c50876085e09e04171\\transformed\\appcompat-1.6.1\\res\\values-be\\values-be.xml",

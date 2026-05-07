@@ -1,10 +1,6 @@
 [
     {
-        "merged": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-mergeDebugResources-35:\\layout\\activity_main.xml",
-        "source": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-main-38:\\layout\\activity_main.xml"
-    },
-    {
-        "merged": "com.example.webcam.app-mergeDebugResources-35:/layout/activity_main.xml",
-        "source": "com.example.webcam.app-main-38:/layout/activity_main.xml"
+        "merged": "com.example.webcam.app-mergeDebugResources-37:/layout/activity_main.xml",
+        "source": "com.example.webcam.app-main-40:/layout/activity_main.xml"
     }
 ]

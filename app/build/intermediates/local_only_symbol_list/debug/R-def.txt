@@ -7,12 +7,14 @@ color purple_700
 color teal_200
 color teal_700
 color white
+drawable ic_circle_button
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 id btnCloseFullScreen
 id btnJoinAsCamera
 id btnReconnect
 id btnStartServer
+id btnSwitchCamera
 id cameraLayout
 id gridVideoContainer
 id imgFullScreen

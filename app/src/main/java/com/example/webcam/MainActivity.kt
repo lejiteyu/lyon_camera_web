@@ -1,11 +1,15 @@
 package com.example.webcam
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,11 +30,27 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var networkManager: NetworkManager
     private lateinit var cameraManager: CameraManager
+    private lateinit var audioManager: AudioManager
     private lateinit var prefs: SharedPreferences
     private val remoteViews = mutableMapOf<String, ImageView>()
+    private val clientAudioStates = mutableMapOf<String, Boolean>() // Store mute/unmute state
     @Volatile private var isSendingFrame = false
     @Volatile private var isStreaming = false 
     @Volatile private var isConnecting = false
+    
+    private var streamingService: StreamingService? = null
+    private val serviceConnection = object : android.content.ServiceConnection {
+        override fun onServiceConnected(name: android.content.ComponentName?, service: IBinder?) {
+            val binder = service as StreamingService.ServiceBinder
+            streamingService = binder.getService()
+            // Give the preview view to the service
+            streamingService?.setPreviewView(binding.previewView)
+        }
+
+        override fun onServiceDisconnected(name: android.content.ComponentName?) {
+            streamingService = null
+        }
+    }
     @Volatile private var hasSentThumbnail = false
     private var frameCount = 0
     private var lastFpsTimestamp = 0L
@@ -42,7 +62,8 @@ class MainActivity : AppCompatActivity() {
 
     private val REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.CAMERA,
-        Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.RECORD_AUDIO
     )
     private val REQUEST_CODE_PERMISSIONS = 10
 
@@ -53,6 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         networkManager = NetworkManager(this)
         cameraManager = CameraManager(this)
+        audioManager = AudioManager()
         prefs = getSharedPreferences("LyonWebCamPrefs", MODE_PRIVATE)
 
         scaleGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -91,8 +113,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnReconnect.setOnClickListener {
-            resetToSelection()
-            startCameraMode()
+            // Only reconnect network, don't reset camera
+            val reconnectIntent = Intent(this, StreamingService::class.java).apply {
+                action = "RECONNECT"
+            }
+            startService(reconnectIntent)
+            Toast.makeText(this, "Reconnecting...", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnSwitchCamera.setOnClickListener {
+            // Tell background service to switch camera (It will handle both stream and preview)
+            val switchIntent = Intent(this, StreamingService::class.java).apply {
+                action = "SWITCH_CAMERA"
+            }
+            startService(switchIntent)
         }
     }
 
@@ -120,30 +154,38 @@ class MainActivity : AppCompatActivity() {
         binding.layoutLiveIndicator.visibility = View.VISIBLE
         
         lifecycleScope.launch {
-            networkManager.startServer(onFrameReceived = { clientIp, deviceName, frameBytes ->
-                runOnUiThread {
-                    // Flash the LIVE dot
-                    binding.viewLiveDot.alpha = 0.3f
-                    binding.viewLiveDot.animate().alpha(1.0f).setDuration(200).start()
-                    
-                    val bitmap = BitmapFactory.decodeByteArray(frameBytes, 0, frameBytes.size) ?: return@runOnUiThread
-                    
-                    val imageView = remoteViews[clientIp] ?: createVideoView(clientIp, deviceName).also {
-                        remoteViews[clientIp] = it
+            networkManager.startServer(
+                onFrameReceived = { clientIp, deviceName, frameBytes ->
+                    runOnUiThread {
+                        // Flash the LIVE dot
+                        binding.viewLiveDot.alpha = 0.3f
+                        binding.viewLiveDot.animate().alpha(1.0f).setDuration(200).start()
+                        
+                        val bitmap = BitmapFactory.decodeByteArray(frameBytes, 0, frameBytes.size) ?: return@runOnUiThread
+                        
+                        val imageView = remoteViews[clientIp] ?: createVideoView(clientIp, deviceName).also {
+                            remoteViews[clientIp] = it
+                        }
+                        imageView.setImageBitmap(bitmap)
+                        
+                        if (fullScreenIp == clientIp) {
+                            binding.imgFullScreen.setImageBitmap(bitmap)
+                        }
                     }
-                    imageView.setImageBitmap(bitmap)
-                    
-                    if (fullScreenIp == clientIp) {
-                        binding.imgFullScreen.setImageBitmap(bitmap)
+                },
+                onAudioReceived = { clientIp, audioData ->
+                    if (clientAudioStates[clientIp] == true) {
+                        audioManager.playAudio(audioData)
+                    }
+                },
+                onClientDisconnected = { clientIp ->
+                    runOnUiThread {
+                        remoteViews.remove(clientIp)
+                        // Also clear grid container
+                        binding.gridVideoContainer.removeAllViews()
                     }
                 }
-            }, onClientDisconnected = { clientIp ->
-                runOnUiThread {
-                    remoteViews.remove(clientIp)
-                    // Also clear grid container
-                    binding.gridVideoContainer.removeAllViews()
-                }
-            })
+            )
         }
     }
 
@@ -187,9 +229,40 @@ class MainActivity : AppCompatActivity() {
             setOnClickListener { showFullScreen(clientIp) }
         }
 
+        val refreshIcon = ImageView(this).apply {
+            setImageResource(android.R.drawable.ic_menu_rotate)
+            layoutParams = FrameLayout.LayoutParams(48, 48).apply {
+                gravity = Gravity.BOTTOM or Gravity.START
+                setMargins(8, 0, 0, 8)
+            }
+            alpha = 0.7f
+            setOnClickListener { 
+                networkManager.sendCommandToClient(clientIp, 2)
+                Toast.makeText(this@MainActivity, "Requesting refresh...", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val audioIcon = ImageView(this).apply {
+            setImageResource(android.R.drawable.ic_lock_silent_mode) // Default muted icon
+            layoutParams = FrameLayout.LayoutParams(48, 48).apply {
+                gravity = Gravity.TOP or Gravity.END
+                setMargins(0, 8, 8, 0)
+            }
+            alpha = 0.7f
+            setOnClickListener {
+                val isEnabled = clientAudioStates[clientIp] ?: false
+                val newState = !isEnabled
+                clientAudioStates[clientIp] = newState
+                setImageResource(if (newState) android.R.drawable.ic_lock_silent_mode_off else android.R.drawable.ic_lock_silent_mode)
+                Toast.makeText(this@MainActivity, if (newState) "Audio Enabled" else "Audio Muted", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         container.addView(imageView)
         container.addView(label)
         container.addView(fullScreenIcon)
+        container.addView(refreshIcon)
+        container.addView(audioIcon)
         binding.gridVideoContainer.addView(container)
         
         return imageView
@@ -253,6 +326,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetToSelection() {
+        // Unbind service first
+        try { unbindService(serviceConnection) } catch (e: Exception) {}
+        streamingService = null
+
+        // Stop background service
+        val stopIntent = Intent(this, StreamingService::class.java).apply {
+            action = "STOP_STREAMING"
+        }
+        stopService(stopIntent)
+
+        audioManager.stopRecording()
+        audioManager.stopPlayback()
         networkManager.stop()
         cameraManager.shutdown()
         
@@ -286,55 +371,23 @@ class MainActivity : AppCompatActivity() {
             isConnecting = true
             
             runOnUiThread {
-                binding.txtClientStatus.text = "Viewer found! Connecting to $host..."
+                binding.txtClientStatus.text = "Viewer found! Starting background service..."
             }
-            lifecycleScope.launch {
-                val deviceName = android.os.Build.MODEL
-                networkManager.connectToServer(host, port, deviceName)
-                runOnUiThread {
-                    binding.txtClientStatus.text = "Connected! Starting stream..."
-                }
-                
-                hasSentThumbnail = false
-                isStreaming = true // Change to true by default if you want continuous stream
-                
-                // Listen for commands in a SEPARATE coroutine
-                lifecycleScope.launch {
-                    networkManager.listenForCommands { command ->
-                        android.util.Log.d("LyonWebCam", "Received command: $command")
-                        runOnUiThread {
-                            isStreaming = (command == 1)
-                            binding.txtClientStatus.text = if (isStreaming) "Streaming..." else "Paused by Viewer"
-                        }
-                    }
-                }
-
-                // Small delay to let camera stabilize
-                kotlinx.coroutines.delay(1000)
-                cameraManager.startCamera(this@MainActivity, binding.previewView) { frameBytes ->
-                    if (isSendingFrame) return@startCamera
-                    
-                    // Always send if connected to keep stream alive (as per user request)
-                    isSendingFrame = true
-                    lifecycleScope.launch {
-                        networkManager.sendFrame(frameBytes)
-                        
-                        // Calculate FPS
-                        frameCount++
-                        val now = System.currentTimeMillis()
-                        if (now - lastFpsTimestamp >= 1000) {
-                            currentFps = frameCount
-                            frameCount = 0
-                            lastFpsTimestamp = now
-                            runOnUiThread {
-                                binding.txtClientStatus.text = "Connected! Stream: ${currentFps} FPS"
-                            }
-                        }
-                        
-                        isSendingFrame = false
-                    }
-                }
+            
+            // Start Foreground Service for EVERYTHING (Connection, Camera, Audio)
+            val serviceIntent = Intent(this@MainActivity, StreamingService::class.java).apply {
+                action = "START_STREAMING"
+                putExtra("HOST", host)
+                putExtra("PORT", port)
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
+            }
+            
+            // Bind to the service to share the preview view
+            bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE)
         }
     }
 
@@ -352,6 +405,18 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Re-attach preview if service is running
+        streamingService?.setPreviewView(binding.previewView)
+    }
+
+    override fun onStop() {
+        // Detach preview when going to background to keep camera alive in service
+        streamingService?.setPreviewView(null)
+        super.onStop()
     }
 
     override fun onDestroy() {

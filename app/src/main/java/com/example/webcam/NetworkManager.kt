@@ -85,9 +85,10 @@ class NetworkManager(private val context: Context) {
         })
     }
 
-    // Server Side: Start listening for frames
+    // Server Side: Start listening for frames and audio
     suspend fun startServer(
         onFrameReceived: (String, String, ByteArray) -> Unit,
+        onAudioReceived: (String, ByteArray) -> Unit,
         onClientDisconnected: (String) -> Unit
     ) = withContext(Dispatchers.IO) {
         serverSocket = ServerSocket(0)
@@ -101,7 +102,7 @@ class NetworkManager(private val context: Context) {
                 val clientIp = socket.inetAddress.hostAddress ?: "Unknown"
                 
                 launch {
-                    handleClientConnection(socket, clientIp, onFrameReceived)
+                    handleClientConnection(socket, clientIp, onFrameReceived, onAudioReceived)
                     // When handleClientConnection returns, the client is disconnected
                     onClientDisconnected(clientIp)
                 }
@@ -113,7 +114,12 @@ class NetworkManager(private val context: Context) {
 
     private val clientOutputStreams = mutableMapOf<String, DataOutputStream>()
 
-    private suspend fun handleClientConnection(socket: Socket, clientIp: String, onFrameReceived: (String, String, ByteArray) -> Unit) = withContext(Dispatchers.IO) {
+    private suspend fun handleClientConnection(
+        socket: Socket, 
+        clientIp: String, 
+        onFrameReceived: (String, String, ByteArray) -> Unit,
+        onAudioReceived: (String, ByteArray) -> Unit
+    ) = withContext(Dispatchers.IO) {
         val inputStream = DataInputStream(socket.getInputStream())
         val outputStream = DataOutputStream(socket.getOutputStream())
         clientOutputStreams[clientIp] = outputStream
@@ -140,12 +146,20 @@ class NetworkManager(private val context: Context) {
                     Log.e(TAG, "Desync from $deviceName ($clientIp)")
                     break
                 }
+                
+                val type = inputStream.readInt() // 0: Video, 1: Audio
                 val size = inputStream.readInt()
                 if (size < 0 || size > 5 * 1024 * 1024) break
+                
                 val buffer = ByteArray(size)
                 inputStream.readFully(buffer)
-                Log.d(TAG, "Server received frame: $size bytes")
-                onFrameReceived(clientIp, deviceName, buffer)
+                
+                if (type == 0) {
+                    Log.d(TAG, "Server received video frame from $deviceName: ${buffer.size} bytes")
+                    onFrameReceived(clientIp, deviceName, buffer)
+                } else if (type == 1) {
+                    onAudioReceived(clientIp, buffer)
+                }
             } catch (e: Exception) {
                 Log.d(TAG, "Client $deviceName disconnected")
                 break
@@ -189,6 +203,7 @@ class NetworkManager(private val context: Context) {
         try {
             clientSocket = Socket(host, port)
             outputStream = DataOutputStream(clientSocket!!.getOutputStream())
+            isRunning = true
             
             // Handshake: Send device name
             val nameBytes = deviceName.toByteArray()
@@ -206,14 +221,31 @@ class NetworkManager(private val context: Context) {
         try {
             sendMutex.withLock {
                 outputStream?.apply {
-                    writeInt(MAGIC_NUMBER) // Send header
+                    writeInt(MAGIC_NUMBER) // Header
+                    writeInt(0)            // Type 0: Video
                     writeInt(data.size)
                     write(data)
                     flush()
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Send error: ${e.message}")
+            Log.e(TAG, "Send frame error: ${e.message}")
+        }
+    }
+
+    suspend fun sendAudio(data: ByteArray) = withContext(Dispatchers.IO) {
+        try {
+            sendMutex.withLock {
+                outputStream?.apply {
+                    writeInt(MAGIC_NUMBER) // Header
+                    writeInt(1)            // Type 1: Audio
+                    writeInt(data.size)
+                    write(data)
+                    flush()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Send audio error: ${e.message}")
         }
     }
 

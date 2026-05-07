@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.webcam.app-mergeDebugResources-34:/values/values.xml",
+            "outputFile": "com.example.webcam.app-mergeDebugResources-36:/values/values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\1bb983839d8d39a1ba2b420090014420\\transformed\\recyclerview-1.1.0\\res\\values\\values.xml",
@@ -40,6 +40,23 @@
                     }
                 },
                 {
+                    "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\bcba587be1c98d7a413491fc5df680b4\\transformed\\lifecycle-viewmodel-2.7.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "49",
+                        "endOffsets": "100"
+                    },
+                    "to": {
+                        "startLines": "1883",
+                        "startColumns": "4",
+                        "startOffsets": "124171",
+                        "endColumns": "49",
+                        "endOffsets": "124216"
+                    }
+                },
+                {
                     "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\e6a65578260325bbe17c5aa806ae231f\\transformed\\jetified-viewpager2-1.0.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -56,23 +73,6 @@
                         "endLines": "13539",
                         "endColumns": "24",
                         "endOffsets": "798288"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\4a51a279006a643a494c3302368ef009\\transformed\\lifecycle-runtime-2.6.1\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "42",
-                        "endOffsets": "93"
-                    },
-                    "to": {
-                        "startLines": "1880",
-                        "startColumns": "4",
-                        "startOffsets": "124014",
-                        "endColumns": "42",
-                        "endOffsets": "124052"
                     }
                 },
                 {
@@ -224,23 +224,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\4253b65c34e0f901b1fc61d3e7a4d504\\transformed\\lifecycle-viewmodel-2.6.1\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "49",
-                        "endOffsets": "100"
-                    },
-                    "to": {
-                        "startLines": "1883",
-                        "startColumns": "4",
-                        "startOffsets": "124171",
-                        "endColumns": "49",
-                        "endOffsets": "124216"
-                    }
-                },
-                {
                     "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\f90f0968a9a1cb5795168cf08a7d929e\\transformed\\jetified-startup-runtime-1.1.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -348,6 +331,23 @@
                         "startOffsets": "120676,120716,121848,122072,122127,123623,123677,123729,123778,123839",
                         "endColumns": "39,46,42,54,46,53,51,48,60,49",
                         "endOffsets": "120711,120758,121886,122122,122169,123672,123724,123773,123834,123884"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\lejit\\.gradle\\caches\\8.9\\transforms\\b1e67cffaf8597c0626181419dbce374\\transformed\\lifecycle-runtime-2.7.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "42",
+                        "endOffsets": "93"
+                    },
+                    "to": {
+                        "startLines": "1880",
+                        "startColumns": "4",
+                        "startOffsets": "124014",
+                        "endColumns": "42",
+                        "endOffsets": "124052"
                     }
                 },
                 {

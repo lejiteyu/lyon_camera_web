@@ -26,142 +26,165 @@
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 16-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:9:5-79
 16-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:9:22-76
-17
-18    <uses-feature android:name="android.hardware.camera" />
-18-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:11:5-60
-18-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:11:19-57
-19
-20    <permission
-20-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
-21        android:name="com.example.webcam.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-21-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
-22        android:protectionLevel="signature" />
-22-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
-23
-24    <uses-permission android:name="com.example.webcam.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-24-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
-24-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
-25
-26    <application
-26-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:13:5-29:19
-27        android:allowBackup="true"
-27-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:14:9-35
-28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-28-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
-29        android:debuggable="true"
-30        android:extractNativeLibs="false"
-31        android:icon="@mipmap/ic_launcher"
-31-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:15:9-43
-32        android:label="Lyon WebCam"
-32-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:16:9-36
-33        android:roundIcon="@mipmap/ic_launcher_round"
-33-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:17:9-54
-34        android:supportsRtl="true"
-34-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:18:9-35
-35        android:testOnly="true"
-36        android:theme="@style/Theme.Material3.DayNight.NoActionBar" >
-36-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:19:9-68
-37        <activity
-37-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:20:9-28:20
-38            android:name="com.example.webcam.MainActivity"
-38-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:21:13-41
-39            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-39-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:23:13-87
-40            android:exported="true" >
-40-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:22:13-36
-41            <intent-filter>
-41-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:24:13-27:29
-42                <action android:name="android.intent.action.MAIN" />
-42-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:25:17-69
-42-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:25:25-66
-43
-44                <category android:name="android.intent.category.LAUNCHER" />
-44-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:26:17-77
-44-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:26:27-74
-45            </intent-filter>
-46        </activity>
-47
-48        <service
-48-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:24:9-33:19
-49            android:name="androidx.camera.core.impl.MetadataHolderService"
-49-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:25:13-75
-50            android:enabled="false"
-50-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:26:13-36
-51            android:exported="false" >
-51-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:27:13-37
-52            <meta-data
-52-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:30:13-32:89
-53                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
-53-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:31:17-103
-54                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
-54-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:32:17-86
-55        </service>
-56
-57        <provider
-57-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-58            android:name="androidx.startup.InitializationProvider"
-58-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
-59            android:authorities="com.example.webcam.androidx-startup"
-59-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+17    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+17-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:10:5-71
+17-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:10:22-68
+18    <uses-permission android:name="android.permission.WAKE_LOCK" />
+18-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:11:5-68
+18-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:11:22-65
+19    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+19-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:12:5-77
+19-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:12:22-74
+20    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+20-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:13:5-84
+20-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:13:22-81
+21    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+21-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:14:5-88
+21-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:14:22-85
+22
+23    <uses-feature android:name="android.hardware.camera" />
+23-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:16:5-60
+23-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:16:19-57
+24
+25    <permission
+25-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+26        android:name="com.example.webcam.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.example.webcam.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+30
+31    <application
+31-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:18:5-41:19
+32        android:allowBackup="true"
+32-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:19:9-35
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.12.0] C:\Users\lejit\.gradle\caches\8.9\transforms\3a204146c18cc7a551420345a5f6b4eb\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+34        android:debuggable="true"
+35        android:extractNativeLibs="false"
+36        android:icon="@mipmap/ic_launcher"
+36-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:20:9-43
+37        android:label="Lyon WebCam"
+37-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:21:9-36
+38        android:roundIcon="@mipmap/ic_launcher_round"
+38-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:22:9-54
+39        android:supportsRtl="true"
+39-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:23:9-35
+40        android:testOnly="true"
+41        android:theme="@style/Theme.Material3.DayNight.NoActionBar" >
+41-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:24:9-68
+42        <activity
+42-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:26:9-34:20
+43            android:name="com.example.webcam.MainActivity"
+43-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:27:13-41
+44            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+44-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:29:13-87
+45            android:exported="true" >
+45-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:28:13-36
+46            <intent-filter>
+46-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:30:13-33:29
+47                <action android:name="android.intent.action.MAIN" />
+47-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:31:17-69
+47-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:31:25-66
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:32:17-77
+49-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:32:27-74
+50            </intent-filter>
+51        </activity>
+52
+53        <service
+53-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:36:9-39:40
+54            android:name="com.example.webcam.StreamingService"
+54-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:37:13-45
+55            android:exported="false"
+55-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:39:13-37
+56            android:foregroundServiceType="camera|microphone" />
+56-->C:\Users\lejit\Document\GitHub\Lyon_webCam_android\app\src\main\AndroidManifest.xml:38:13-62
+57        <service
+57-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:24:9-33:19
+58            android:name="androidx.camera.core.impl.MetadataHolderService"
+58-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:25:13-75
+59            android:enabled="false"
+59-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:26:13-36
 60            android:exported="false" >
-60-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+60-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:27:13-37
 61            <meta-data
-61-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-62                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-62-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
-63                android:value="androidx.startup" />
-63-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
-64            <meta-data
-64-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\lejit\.gradle\caches\8.9\transforms\49ad152b665140c14fbc99fad04a89b6\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
-65                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-65-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\lejit\.gradle\caches\8.9\transforms\49ad152b665140c14fbc99fad04a89b6\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
-66                android:value="androidx.startup" />
-66-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\lejit\.gradle\caches\8.9\transforms\49ad152b665140c14fbc99fad04a89b6\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
-67            <meta-data
-67-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
-68                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-68-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
-69                android:value="androidx.startup" />
-69-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
-70        </provider>
-71
-72        <receiver
-72-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
-73            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-73-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
-74            android:directBootAware="false"
-74-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
-75            android:enabled="true"
-75-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
-76            android:exported="true"
-76-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
-77            android:permission="android.permission.DUMP" >
-77-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
-78            <intent-filter>
-78-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
-79                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-79-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-79-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
-80            </intent-filter>
-81            <intent-filter>
-81-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
-82                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-82-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-82-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
-83            </intent-filter>
-84            <intent-filter>
-84-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
-85                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-85-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-85-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
-86            </intent-filter>
+61-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:30:13-32:89
+62                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
+62-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:31:17-103
+63                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
+63-->[androidx.camera:camera-camera2:1.3.1] C:\Users\lejit\.gradle\caches\8.9\transforms\23eeeaff7902a0f77995420a3377dfc9\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:32:17-86
+64        </service>
+65
+66        <provider
+66-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+67            android:name="androidx.startup.InitializationProvider"
+67-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+68            android:authorities="com.example.webcam.androidx-startup"
+68-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+69            android:exported="false" >
+69-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+70            <meta-data
+70-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+71                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+71-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+72                android:value="androidx.startup" />
+72-->[androidx.emoji2:emoji2:1.2.0] C:\Users\lejit\.gradle\caches\8.9\transforms\7080891ec8a385c301db25dc4588f609\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+73            <meta-data
+73-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\lejit\.gradle\caches\8.9\transforms\9e5a6dd034979a17e52b82d306b2954c\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+74                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+74-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\lejit\.gradle\caches\8.9\transforms\9e5a6dd034979a17e52b82d306b2954c\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+75                android:value="androidx.startup" />
+75-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\lejit\.gradle\caches\8.9\transforms\9e5a6dd034979a17e52b82d306b2954c\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+76            <meta-data
+76-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+77                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+77-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+78                android:value="androidx.startup" />
+78-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+79        </provider>
+80
+81        <receiver
+81-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+82            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+82-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+83            android:directBootAware="false"
+83-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+84            android:enabled="true"
+84-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+85            android:exported="true"
+85-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+86            android:permission="android.permission.DUMP" >
+86-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
 87            <intent-filter>
-87-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
-88                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+87-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+88                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
 89            </intent-filter>
-90        </receiver>
-91    </application>
-92
-93</manifest>
+90            <intent-filter>
+90-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+91                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+91-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+91-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+92            </intent-filter>
+93            <intent-filter>
+93-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+94                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+94-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+94-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+95            </intent-filter>
+96            <intent-filter>
+96-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+97                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+97-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+97-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\lejit\.gradle\caches\8.9\transforms\e01f36121ee4da40ee95b263e2e5190a\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+98            </intent-filter>
+99        </receiver>
+100    </application>
+101
+102</manifest>

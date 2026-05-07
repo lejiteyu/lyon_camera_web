@@ -19,10 +19,19 @@ import java.util.concurrent.Executors
 class CameraManager(private val context: Context) {
     private val TAG = "CameraManager"
     private var cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+    
+    companion object {
+        private var isFrontCamera = false
+    }
+
+    fun switchCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView?, onFrameCaptured: (ByteArray) -> Unit) {
+        isFrontCamera = !isFrontCamera
+        startCamera(lifecycleOwner, previewView, onFrameCaptured)
+    }
 
     fun startCamera(
         lifecycleOwner: LifecycleOwner,
-        previewView: PreviewView,
+        previewView: PreviewView?,
         onFrameCaptured: (ByteArray) -> Unit
     ) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -30,8 +39,10 @@ class CameraManager(private val context: Context) {
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(previewView.surfaceProvider)
+            val preview = previewView?.let {
+                Preview.Builder().build().also { p ->
+                    p.setSurfaceProvider(it.surfaceProvider)
+                }
             }
 
             val imageAnalysis = ImageAnalysis.Builder()
@@ -44,12 +55,19 @@ class CameraManager(private val context: Context) {
                     val bitmap = imageProxy.toBitmap()
                     
                     // Manually apply rotation if it's not 0
-                    val finalBitmap = if (rotationDegrees != 0) {
+                    var finalBitmap = if (rotationDegrees != 0) {
                         val matrix = android.graphics.Matrix()
                         matrix.postRotate(rotationDegrees.toFloat())
                         Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                     } else {
                         bitmap
+                    }
+                    
+                    // Flip horizontally if using front camera
+                    if (isFrontCamera) {
+                        val matrix = android.graphics.Matrix()
+                        matrix.postScale(-1f, 1f, finalBitmap.width / 2f, finalBitmap.height / 2f)
+                        finalBitmap = Bitmap.createBitmap(finalBitmap, 0, 0, finalBitmap.width, finalBitmap.height, matrix, true)
                     }
 
                     val outputStream = java.io.ByteArrayOutputStream()
@@ -65,12 +83,15 @@ class CameraManager(private val context: Context) {
                 }
             }
 
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            val cameraSelector = if (isFrontCamera) CameraSelector.DEFAULT_FRONT_CAMERA else CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
                 cameraProvider.unbindAll()
+                val useCases = mutableListOf<UseCase>(imageAnalysis)
+                preview?.let { useCases.add(it) }
+                
                 cameraProvider.bindToLifecycle(
-                    lifecycleOwner, cameraSelector, preview, imageAnalysis
+                    lifecycleOwner, cameraSelector, *useCases.toTypedArray()
                 )
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)

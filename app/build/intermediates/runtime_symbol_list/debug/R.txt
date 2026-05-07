@@ -2996,6 +2996,7 @@ int drawable ic_call_answer_video 0x7f070089
 int drawable ic_call_answer_video_low 0x7f07008a
 int drawable ic_call_decline 0x7f07008b
 int drawable ic_call_decline_low 0x7f07008c
+int drawable ic_circle_button 0x7f0700e5
 int drawable ic_clear_black_24 0x7f07008d
 int drawable ic_clock_black_24dp 0x7f07008e
 int drawable ic_keyboard_black_24dp 0x7f07008f
@@ -3186,6 +3187,7 @@ int id btnCloseFullScreen 0x7f080200
 int id btnJoinAsCamera 0x7f080062
 int id btnReconnect 0x7f080201
 int id btnStartServer 0x7f080063
+int id btnSwitchCamera 0x7f080204
 int id buttonPanel 0x7f080064
 int id cache_measures 0x7f080065
 int id callMeasure 0x7f080066

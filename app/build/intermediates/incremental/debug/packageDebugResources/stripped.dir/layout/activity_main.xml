@@ -148,13 +148,24 @@
             android:background="#88000000"
             android:padding="8dp"/>
 
+        <ImageButton
+            android:id="@+id/btnSwitchCamera"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="32dp"
+            android:background="@drawable/ic_circle_button"
+            android:padding="12dp"
+            android:src="@android:drawable/ic_menu_camera"
+            app:tint="#FFFFFF" />
+
         <Button
             android:id="@+id/btnReconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="32dp"
-            android:text="Retry / Reconnect"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="32dp"
+            android:text="Retry"
             app:cornerRadius="8dp" />
     </FrameLayout>
 
