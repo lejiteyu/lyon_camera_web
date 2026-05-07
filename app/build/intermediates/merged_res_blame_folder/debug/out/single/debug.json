@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-merged_res-36:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-main-38:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-merged_res-36:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-main-38:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-merged_res-36:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-main-38:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.example.webcam.app-merged_res-36:/layout_activity_main.xml.flat",
+        "source": "com.example.webcam.app-main-38:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-merged_res-36:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-main-38:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-merged_res-36:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\lejit\\.gradle\\daemon\\8.9\\com.example.webcam.app-main-38:\\drawable\\ic_launcher_background.xml"
+    }
+]
