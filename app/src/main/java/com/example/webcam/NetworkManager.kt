@@ -25,31 +25,54 @@ class NetworkManager(private val context: Context) {
     private val sendMutex = Mutex()
 
     // Server Side: Register Service
+    private var registrationListener: NsdManager.RegistrationListener? = null
     fun registerService(port: Int) {
+        unregisterService() // Clean up old ones
         val serviceInfo = NsdServiceInfo().apply {
             serviceName = SERVICE_NAME
             serviceType = SERVICE_TYPE
             setPort(port)
         }
-        nsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, object : NsdManager.RegistrationListener {
+        registrationListener = object : NsdManager.RegistrationListener {
             override fun onServiceRegistered(info: NsdServiceInfo) {
                 Log.d(TAG, "Service registered: ${info.serviceName}")
             }
-            override fun onRegistrationFailed(info: NsdServiceInfo, errorCode: Int) {}
+            override fun onRegistrationFailed(info: NsdServiceInfo, errorCode: Int) {
+                Log.e(TAG, "Registration failed: $errorCode")
+            }
             override fun onServiceUnregistered(info: NsdServiceInfo) {}
             override fun onUnregistrationFailed(info: NsdServiceInfo, errorCode: Int) {}
-        })
+        }
+        nsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
+    }
+
+    private fun unregisterService() {
+        registrationListener?.let {
+            try {
+                nsdManager.unregisterService(it)
+            } catch (e: Exception) {}
+            registrationListener = null
+        }
     }
 
     // Client Side: Discover Service
+    private var isResolving = false
     fun discoverService(onServiceFound: (String, Int) -> Unit) {
         nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, object : NsdManager.DiscoveryListener {
-            override fun onDiscoveryStarted(regType: String) {}
+            override fun onDiscoveryStarted(regType: String) {
+                Log.d(TAG, "Discovery started")
+            }
             override fun onServiceFound(service: NsdServiceInfo) {
-                if (service.serviceName.contains(SERVICE_NAME)) {
+                Log.d(TAG, "Service found: ${service.serviceName}")
+                if (service.serviceName.contains(SERVICE_NAME) && !isResolving) {
+                    isResolving = true
                     nsdManager.resolveService(service, object : NsdManager.ResolveListener {
-                        override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {}
+                        override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                            isResolving = false
+                            Log.e(TAG, "Resolve failed: $errorCode")
+                        }
                         override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
+                            Log.d(TAG, "Service resolved: ${serviceInfo.host.hostAddress}")
                             onServiceFound(serviceInfo.host.hostAddress!!, serviceInfo.port)
                         }
                     })
@@ -63,8 +86,11 @@ class NetworkManager(private val context: Context) {
     }
 
     // Server Side: Start listening for frames
-    suspend fun startServer(onFrameReceived: (String, ByteArray) -> Unit) = withContext(Dispatchers.IO) {
-        serverSocket = ServerSocket(0) // Let system pick port
+    suspend fun startServer(
+        onFrameReceived: (String, String, ByteArray) -> Unit,
+        onClientDisconnected: (String) -> Unit
+    ) = withContext(Dispatchers.IO) {
+        serverSocket = ServerSocket(0)
         val port = serverSocket!!.localPort
         registerService(port)
         isRunning = true
@@ -73,8 +99,11 @@ class NetworkManager(private val context: Context) {
             try {
                 val socket = serverSocket?.accept() ?: break
                 val clientIp = socket.inetAddress.hostAddress ?: "Unknown"
+                
                 launch {
                     handleClientConnection(socket, clientIp, onFrameReceived)
+                    // When handleClientConnection returns, the client is disconnected
+                    onClientDisconnected(clientIp)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Server error: ${e.message}")
@@ -82,40 +111,91 @@ class NetworkManager(private val context: Context) {
         }
     }
 
-    private suspend fun handleClientConnection(socket: Socket, clientIp: String, onFrameReceived: (String, ByteArray) -> Unit) = withContext(Dispatchers.IO) {
+    private val clientOutputStreams = mutableMapOf<String, DataOutputStream>()
+
+    private suspend fun handleClientConnection(socket: Socket, clientIp: String, onFrameReceived: (String, String, ByteArray) -> Unit) = withContext(Dispatchers.IO) {
         val inputStream = DataInputStream(socket.getInputStream())
+        val outputStream = DataOutputStream(socket.getOutputStream())
+        clientOutputStreams[clientIp] = outputStream
+        
+        var deviceName = "Unknown"
+        try {
+            Log.d(TAG, "New connection from $clientIp, waiting for handshake...")
+            // Handshake: Read device name
+            val nameLength = inputStream.readInt()
+            if (nameLength in 1..256) {
+                val nameBytes = ByteArray(nameLength)
+                inputStream.readFully(nameBytes)
+                deviceName = String(nameBytes)
+                Log.d(TAG, "Handshake success: $deviceName")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Handshake failed from $clientIp: ${e.message}")
+        }
+
         while (isRunning && !socket.isClosed) {
             try {
-                // Check for Magic Number to ensure sync
-                if (inputStream.readInt() != MAGIC_NUMBER) {
-                    Log.e(TAG, "Stream desync from $clientIp. Closing.")
+                val magic = inputStream.readInt()
+                if (magic != MAGIC_NUMBER) {
+                    Log.e(TAG, "Desync from $deviceName ($clientIp)")
                     break
                 }
-                
                 val size = inputStream.readInt()
-                if (size < 0 || size > 5 * 1024 * 1024) { // Limit to 5MB per frame
-                    Log.e(TAG, "Invalid frame size: $size. Closing.")
-                    break
-                }
-                
+                if (size < 0 || size > 5 * 1024 * 1024) break
                 val buffer = ByteArray(size)
                 inputStream.readFully(buffer)
-                onFrameReceived(clientIp, buffer)
+                Log.d(TAG, "Server received frame: $size bytes")
+                onFrameReceived(clientIp, deviceName, buffer)
             } catch (e: Exception) {
-                Log.e(TAG, "Connection error from $clientIp: ${e.message}")
+                Log.d(TAG, "Client $deviceName disconnected")
                 break
             }
         }
-        socket.close()
+        clientOutputStreams.remove(clientIp)
+        try { socket.close() } catch (e: Exception) {}
+    }
+
+    fun sendCommandToClient(clientIp: String, command: Int) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                Log.d(TAG, "Sending command $command to $clientIp")
+                clientOutputStreams[clientIp]?.apply {
+                    writeInt(command)
+                    flush()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to send command: ${e.message}")
+            }
+        }
+    }
+
+    // Client Side: Listen for commands from server
+    suspend fun listenForCommands(onCommand: (Int) -> Unit) = withContext(Dispatchers.IO) {
+        val inputStream = DataInputStream(clientSocket?.getInputStream())
+        while (isRunning && clientSocket?.isClosed == false) {
+            try {
+                val command = inputStream?.readInt() ?: break
+                onCommand(command)
+            } catch (e: Exception) {
+                break
+            }
+        }
     }
 
     // Client Side: Connect and send frames
     private var outputStream: DataOutputStream? = null
 
-    suspend fun connectToServer(host: String, port: Int) = withContext(Dispatchers.IO) {
+    suspend fun connectToServer(host: String, port: Int, deviceName: String) = withContext(Dispatchers.IO) {
         try {
             clientSocket = Socket(host, port)
             outputStream = DataOutputStream(clientSocket!!.getOutputStream())
+            
+            // Handshake: Send device name
+            val nameBytes = deviceName.toByteArray()
+            outputStream?.writeInt(nameBytes.size)
+            outputStream?.write(nameBytes)
+            outputStream?.flush()
+            
             Log.d(TAG, "Connected to server")
         } catch (e: Exception) {
             Log.e(TAG, "Connection failed: ${e.message}")
@@ -139,7 +219,10 @@ class NetworkManager(private val context: Context) {
 
     fun stop() {
         isRunning = false
-        serverSocket?.close()
-        clientSocket?.close()
+        unregisterService()
+        try { serverSocket?.close() } catch (e: Exception) {}
+        try { clientSocket?.close() } catch (e: Exception) {}
+        serverSocket = null
+        clientSocket = null
     }
 }

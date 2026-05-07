@@ -39,11 +39,30 @@ class CameraManager(private val context: Context) {
                 .build()
 
             imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
-                val jpegBytes = imageProxyToJpeg(imageProxy)
-                if (jpegBytes != null) {
-                    onFrameCaptured(jpegBytes)
+                try {
+                    val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+                    val bitmap = imageProxy.toBitmap()
+                    
+                    // Manually apply rotation if it's not 0
+                    val finalBitmap = if (rotationDegrees != 0) {
+                        val matrix = android.graphics.Matrix()
+                        matrix.postRotate(rotationDegrees.toFloat())
+                        Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+                    } else {
+                        bitmap
+                    }
+
+                    val outputStream = java.io.ByteArrayOutputStream()
+                    finalBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 50, outputStream)
+                    val bytes = outputStream.toByteArray()
+                    if (bytes.isNotEmpty()) {
+                        onFrameCaptured(bytes)
+                    }
+                } catch (e: Exception) {
+                    Log.e("CameraManager", "Analysis error: ${e.message}")
+                } finally {
+                    imageProxy.close()
                 }
-                imageProxy.close()
             }
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA

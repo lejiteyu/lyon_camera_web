@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -25,7 +27,13 @@ public final class ActivityMainBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
+  public final ImageButton btnCloseFullScreen;
+
+  @NonNull
   public final Button btnJoinAsCamera;
+
+  @NonNull
+  public final Button btnReconnect;
 
   @NonNull
   public final Button btnStartServer;
@@ -35,6 +43,12 @@ public final class ActivityMainBinding implements ViewBinding {
 
   @NonNull
   public final GridLayout gridVideoContainer;
+
+  @NonNull
+  public final ImageView imgFullScreen;
+
+  @NonNull
+  public final LinearLayout layoutLiveIndicator;
 
   @NonNull
   public final PreviewView previewView;
@@ -49,22 +63,33 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView txtServerStatus;
 
   @NonNull
+  public final View viewLiveDot;
+
+  @NonNull
   public final LinearLayout viewerLayout;
 
-  private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull Button btnJoinAsCamera,
-      @NonNull Button btnStartServer, @NonNull FrameLayout cameraLayout,
-      @NonNull GridLayout gridVideoContainer, @NonNull PreviewView previewView,
-      @NonNull LinearLayout selectionLayout, @NonNull TextView txtClientStatus,
-      @NonNull TextView txtServerStatus, @NonNull LinearLayout viewerLayout) {
+  private ActivityMainBinding(@NonNull ConstraintLayout rootView,
+      @NonNull ImageButton btnCloseFullScreen, @NonNull Button btnJoinAsCamera,
+      @NonNull Button btnReconnect, @NonNull Button btnStartServer,
+      @NonNull FrameLayout cameraLayout, @NonNull GridLayout gridVideoContainer,
+      @NonNull ImageView imgFullScreen, @NonNull LinearLayout layoutLiveIndicator,
+      @NonNull PreviewView previewView, @NonNull LinearLayout selectionLayout,
+      @NonNull TextView txtClientStatus, @NonNull TextView txtServerStatus,
+      @NonNull View viewLiveDot, @NonNull LinearLayout viewerLayout) {
     this.rootView = rootView;
+    this.btnCloseFullScreen = btnCloseFullScreen;
     this.btnJoinAsCamera = btnJoinAsCamera;
+    this.btnReconnect = btnReconnect;
     this.btnStartServer = btnStartServer;
     this.cameraLayout = cameraLayout;
     this.gridVideoContainer = gridVideoContainer;
+    this.imgFullScreen = imgFullScreen;
+    this.layoutLiveIndicator = layoutLiveIndicator;
     this.previewView = previewView;
     this.selectionLayout = selectionLayout;
     this.txtClientStatus = txtClientStatus;
     this.txtServerStatus = txtServerStatus;
+    this.viewLiveDot = viewLiveDot;
     this.viewerLayout = viewerLayout;
   }
 
@@ -95,9 +120,21 @@ public final class ActivityMainBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnCloseFullScreen;
+      ImageButton btnCloseFullScreen = ViewBindings.findChildViewById(rootView, id);
+      if (btnCloseFullScreen == null) {
+        break missingId;
+      }
+
       id = R.id.btnJoinAsCamera;
       Button btnJoinAsCamera = ViewBindings.findChildViewById(rootView, id);
       if (btnJoinAsCamera == null) {
+        break missingId;
+      }
+
+      id = R.id.btnReconnect;
+      Button btnReconnect = ViewBindings.findChildViewById(rootView, id);
+      if (btnReconnect == null) {
         break missingId;
       }
 
@@ -116,6 +153,18 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.gridVideoContainer;
       GridLayout gridVideoContainer = ViewBindings.findChildViewById(rootView, id);
       if (gridVideoContainer == null) {
+        break missingId;
+      }
+
+      id = R.id.imgFullScreen;
+      ImageView imgFullScreen = ViewBindings.findChildViewById(rootView, id);
+      if (imgFullScreen == null) {
+        break missingId;
+      }
+
+      id = R.id.layoutLiveIndicator;
+      LinearLayout layoutLiveIndicator = ViewBindings.findChildViewById(rootView, id);
+      if (layoutLiveIndicator == null) {
         break missingId;
       }
 
@@ -143,15 +192,22 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.viewLiveDot;
+      View viewLiveDot = ViewBindings.findChildViewById(rootView, id);
+      if (viewLiveDot == null) {
+        break missingId;
+      }
+
       id = R.id.viewerLayout;
       LinearLayout viewerLayout = ViewBindings.findChildViewById(rootView, id);
       if (viewerLayout == null) {
         break missingId;
       }
 
-      return new ActivityMainBinding((ConstraintLayout) rootView, btnJoinAsCamera, btnStartServer,
-          cameraLayout, gridVideoContainer, previewView, selectionLayout, txtClientStatus,
-          txtServerStatus, viewerLayout);
+      return new ActivityMainBinding((ConstraintLayout) rootView, btnCloseFullScreen,
+          btnJoinAsCamera, btnReconnect, btnStartServer, cameraLayout, gridVideoContainer,
+          imgFullScreen, layoutLiveIndicator, previewView, selectionLayout, txtClientStatus,
+          txtServerStatus, viewLiveDot, viewerLayout);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

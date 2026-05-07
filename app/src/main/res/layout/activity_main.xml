@@ -50,14 +50,42 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/txtServerStatus"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="Waiting for connections..."
-            android:textColor="#BBFFFFFF" />
+            android:layout_marginTop="16dp">
+            <TextView
+                android:id="@+id/txtServerStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Waiting for connections..."
+                android:textColor="#BBFFFFFF" />
+            
+            <LinearLayout
+                android:id="@+id/layoutLiveIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/viewLiveDot"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="@android:drawable/presence_online"
+                    android:layout_marginEnd="4dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LIVE"
+                    android:textColor="#4CAF50"
+                    android:textStyle="bold"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -73,6 +101,29 @@
                 android:padding="8dp" />
         </ScrollView>
     </LinearLayout>
+
+    <!-- Full Screen View -->
+    <ImageView
+        android:id="@+id/imgFullScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnCloseFullScreen"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="#80000000"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="#FFFFFF" />
 
     <!-- Camera UI -->
     <FrameLayout
@@ -96,6 +147,15 @@
             android:layout_marginTop="16dp"
             android:background="#88000000"
             android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/btnReconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:text="Retry / Reconnect"
+            app:cornerRadius="8dp" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
