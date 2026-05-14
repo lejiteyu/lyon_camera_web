@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var networkManager: NetworkManager
     private lateinit var cameraManager: CameraManager
     private lateinit var audioManager: AudioManager
+    private lateinit var faceAnalyzer: FaceAnalyzer
+    private lateinit var faceClassifier: FaceClassifier
+    private lateinit var faceDatabase: FaceDatabase
     private lateinit var prefs: SharedPreferences
     private val remoteViews = mutableMapOf<String, ImageView>()
     private val clientAudioStates = mutableMapOf<String, Boolean>() // Store mute/unmute state
@@ -59,6 +62,11 @@ class MainActivity : AppCompatActivity() {
     private var fullScreenIp: String? = null
     private var scaleFactor = 1.0f
     private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private var lastAnalysisTimestamp = 0L
+    private val ANALYSIS_INTERVAL_MS = 300L
+    private var lastFaceEmbedding: FloatArray? = null
+    private var lastFaceRect: android.graphics.Rect? = null
+    private var lastBitmap: Bitmap? = null
 
     private val REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.CAMERA,
@@ -75,6 +83,9 @@ class MainActivity : AppCompatActivity() {
         networkManager = NetworkManager(this)
         cameraManager = CameraManager(this)
         audioManager = AudioManager()
+        faceAnalyzer = FaceAnalyzer()
+        faceClassifier = FaceClassifier(this)
+        faceDatabase = FaceDatabase(this)
         prefs = getSharedPreferences("LyonWebCamPrefs", MODE_PRIVATE)
 
         scaleGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -128,6 +139,10 @@ class MainActivity : AppCompatActivity() {
             }
             startService(switchIntent)
         }
+
+        binding.btnRegisterFace.setOnClickListener {
+            showRegisterDialog()
+        }
     }
 
     private fun showOnboardingGuide() {
@@ -170,6 +185,23 @@ class MainActivity : AppCompatActivity() {
                         
                         if (fullScreenIp == clientIp) {
                             binding.imgFullScreen.setImageBitmap(bitmap)
+                            
+                            // Perform Face Detection only in full screen
+                            val currentTime = System.currentTimeMillis()
+                            if (currentTime - lastAnalysisTimestamp > ANALYSIS_INTERVAL_MS) {
+                                lastAnalysisTimestamp = currentTime
+                                lastBitmap = bitmap
+                                faceAnalyzer.analyze(bitmap) { result ->
+                                    lastFaceRect = result.boundingBox
+                                    // Extract embedding for recognition
+                                    if (result.boundingBox != null) {
+                                        lastFaceEmbedding = faceClassifier.getFaceEmbedding(bitmap, result.boundingBox)
+                                    } else {
+                                        lastFaceEmbedding = null
+                                    }
+                                    updateFaceStatusUI(result, lastFaceEmbedding)
+                                }
+                            }
                         }
                     }
                 },
@@ -284,6 +316,9 @@ class MainActivity : AppCompatActivity() {
         binding.imgFullScreen.scaleY = 1.0f
         binding.imgFullScreen.visibility = View.VISIBLE
         binding.btnCloseFullScreen.visibility = View.VISIBLE
+        binding.txtFaceStatus.visibility = View.VISIBLE
+        binding.btnRegisterFace.visibility = View.VISIBLE
+        binding.txtFaceStatus.text = "正在初始化人臉辨識..."
         
         // Switch to landscape
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
@@ -303,6 +338,8 @@ class MainActivity : AppCompatActivity() {
         fullScreenIp = null
         binding.imgFullScreen.visibility = View.GONE
         binding.btnCloseFullScreen.visibility = View.GONE
+        binding.txtFaceStatus.visibility = View.GONE
+        binding.btnRegisterFace.visibility = View.GONE
         
         // Restore orientation
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -423,5 +460,66 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         networkManager.stop()
         cameraManager.shutdown()
+        faceAnalyzer.stop()
+        faceClassifier.close()
+    }
+
+    private fun updateFaceStatusUI(result: FaceAnalyzer.AnalysisResult, embedding: FloatArray?) {
+        runOnUiThread {
+            if (result.faceCount == 0) {
+                binding.txtFaceStatus.text = "未偵測到人臉"
+                binding.txtFaceStatus.setTextColor(0xFFFFFFFF.toInt())
+                return@runOnUiThread
+            }
+
+            val sb = StringBuilder()
+            
+            // 1. Identity Recognition
+            if (embedding != null) {
+                val match = faceDatabase.findNearest(embedding)
+                if (match != null && match.second < 1.0f) { // Threshold 1.0 for MobileFaceNet
+                    sb.append("辨識身分: ${match.first}\n")
+                    sb.append("置信度: ${String.format("%.2f", 1.0f - match.second/2.0f)}\n")
+                } else {
+                    sb.append("辨識身分: 未知路人\n")
+                }
+            }
+
+            sb.append("人臉數量: ${result.faceCount}\n")
+            
+            val isClosed = (result.isLeftEyeOpen == false || result.isRightEyeOpen == false)
+            if (isClosed) {
+                sb.append("⚠️ 偵測到閉眼！")
+                binding.txtFaceStatus.setTextColor(0xFFFF5252.toInt()) // Red
+            } else {
+                sb.append("眼睛狀態: 開啟")
+                binding.txtFaceStatus.setTextColor(0xFF4CAF50.toInt()) // Green
+            }
+            
+            binding.txtFaceStatus.text = sb.toString()
+        }
+    }
+
+    private fun showRegisterDialog() {
+        val embedding = lastFaceEmbedding
+        if (embedding == null) {
+            Toast.makeText(this, "未偵測到人臉，無法註冊！", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val input = android.widget.EditText(this)
+        AlertDialog.Builder(this)
+            .setTitle("註冊新臉孔")
+            .setMessage("請輸入此人的姓名：")
+            .setView(input)
+            .setPositiveButton("完成註冊") { _, _ ->
+                val name = input.text.toString()
+                if (name.isNotEmpty()) {
+                    faceDatabase.registerFace(name, embedding)
+                    Toast.makeText(this, "已成功註冊：$name", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
     }
 }

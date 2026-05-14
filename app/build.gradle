@@ -54,6 +54,16 @@ dependencies {
     // Lifecycle Service for background processing
     implementation "androidx.lifecycle:lifecycle-service:2.7.0"
 
+    // ML Kit Face Detection
+    implementation 'com.google.mlkit:face-detection:16.1.6'
+
+    // TensorFlow Lite
+    implementation 'org.tensorflow:tensorflow-lite:2.14.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'
+
+    // JSON Serialization
+    implementation 'com.google.code.gson:gson:2.10.1'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
